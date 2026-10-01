@@ -110,78 +110,91 @@ status-website:
        at 48px inside a 40px link — so the wordmark overflowed its own
        container and the top of it was being clipped off. That is what looked
        broken. The site uses h-7 (28px) in a 64px bar. */
-    nav { background: #131520; border-bottom: none; padding: 0; overflow: visible; }
-    nav > .container { max-width: none; padding: 0 1.5rem; height: 4rem; min-height: 0; }
-    nav > .container > div:first-child { display: flex; align-items: center; height: 4rem; }
-    nav .logo { padding: 0; height: 4rem; display: flex; align-items: center; }
-    nav .logo img { height: 1.75rem; width: auto; max-height: none; display: block; }
-    /* The logo IS the wordmark; the site title rendered it a second time. */
-    nav .logo > div { display: none; }
-    nav ul { height: 4rem; align-items: center; margin: 0; }
-    nav a {
-      color: rgba(255, 255, 255, 0.8);
-      text-transform: uppercase;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      border-bottom: none;
-      padding-bottom: 0;
+    /* !important throughout this block, and not out of laziness: the rules
+       being overridden are Svelte's scoped ones, e.g.
+       `.logo.svelte-a08hsz img.svelte-a08hsz`, which carry three classes and
+       beat anything reasonable written here. The generated hash also changes
+       between releases, so matching it would break on the next update. */
+    nav { background: #131520 !important; border-bottom: none !important; padding: 0 !important; overflow: visible !important; }
+    nav > .container { max-width: none !important; padding: 0 1.5rem !important; height: 4rem !important; min-height: 0 !important; }
+    nav > .container > div:first-child { display: flex !important; align-items: center !important; height: 4rem !important; }
+    nav .logo { padding: 0 !important; height: 4rem !important; display: flex !important; align-items: center !important; }
+    nav .logo img {
+      height: 1.75rem !important;
+      width: auto !important;
+      max-height: none !important;
+      display: block !important;
+      /* Upptime rounds every logo by 0.2rem, which on a rectangular wordmark
+         in a drawn box shaves the corners off the box. */
+      border-radius: 0 !important;
     }
-    nav a:hover { color: #ffffff; }
-    nav li a[aria-current] { color: #ffffff; border-bottom: none; }
+    /* The logo IS the wordmark; the site title rendered it a second time. */
+    nav .logo > div { display: none !important; }
+    nav ul { height: 4rem !important; align-items: center !important; margin: 0 !important; }
+    nav a {
+      color: rgba(255, 255, 255, 0.8) !important;
+      text-transform: uppercase !important;
+      font-size: 0.75rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.05em !important;
+      border-bottom: none !important;
+      padding-bottom: 0 !important;
+    }
+    nav a:hover { color: #ffffff !important; }
+    nav li a[aria-current] { color: #ffffff !important; border-bottom: none !important; }
 
     /* --- Page: max-w-2xl, py-16 ----------------------------------------- */
-    main { padding: 4rem 1rem; }
-    main .container { max-width: 42rem; }
+    main { padding: 4rem 1rem !important; }
+    main .container { max-width: 42rem !important; }
     h1 {
-      font-size: 1.875rem;
-      font-weight: 700;
-      text-align: center;
-      color: #131520;
-      margin: 0;
+      font-size: 1.875rem !important;
+      font-weight: 700 !important;
+      text-align: center !important;
+      color: #131520 !important;
+      margin: 0 !important;
     }
     .lead {
-      font-size: 1rem;
-      text-align: center;
-      color: #626784;
-      margin: 0.5rem 0 3rem;
-      max-width: none;
+      font-size: 1rem !important;
+      text-align: center !important;
+      color: #626784 !important;
+      margin: 0.5rem 0 3rem !important;
+      max-width: none !important;
     }
 
     /* --- Overall banner: rounded-lg border p-6 mb-8 text-center ---------- */
     main > article {
-      display: block;
-      text-align: center;
-      border: 1px solid rgba(34, 197, 94, 0.2);
-      border-radius: 0.5rem;
-      background: rgba(34, 197, 94, 0.05);
-      color: #22c55e;
-      font-size: 1.125rem;
-      font-weight: 600;
-      padding: 1.5rem;
-      margin: 0 0 2rem;
+      display: block !important;
+      text-align: center !important;
+      border: 1px solid rgba(34, 197, 94, 0.2) !important;
+      border-radius: 0.5rem !important;
+      background: rgba(34, 197, 94, 0.05) !important;
+      color: #22c55e !important;
+      font-size: 1.125rem !important;
+      font-weight: 600 !important;
+      padding: 1.5rem !important;
+      margin: 0 0 2rem !important;
     }
 
-    h2 { display: none; }
+    h2 { display: none !important; }
 
     /* --- Rows: rounded-lg border p-4, space-y-3 -------------------------- */
     .live-status article {
-      position: relative;
-      border: 1px solid #dcdde5;
-      border-left-width: 1px;
-      border-radius: 0.5rem;
-      background: #ffffff;
-      background-image: none;
-      padding: 1rem;
-      margin: 0 0 0.75rem;
+      position: relative !important;
+      border: 1px solid #dcdde5 !important;
+      border-left-width: 1px !important;
+      border-radius: 0.5rem !important;
+      background: #ffffff !important;
+      background-image: none !important;
+      padding: 1rem !important;
+      margin: 0 0 0.75rem !important;
     }
-    .live-status article h4 { font-size: 1rem; font-weight: 500; margin: 0; }
-    .live-status article h4 a { color: #131520; text-decoration: none; }
+    .live-status article h4 { font-size: 1rem !important; font-weight: 500 !important; margin: 0 !important; }
+    .live-status article h4 a { color: #131520 !important; text-decoration: none !important; }
     /* Every row points at the same API, so the per-site favicon was nine
        copies of one icon saying nothing. */
     .live-status article h4 .icon { display: none; }
-    .live-status article > div { font-size: 0.75rem; color: #626784; line-height: 1.5; }
-    .live-status .data { color: #626784; font-weight: 400; }
+    .live-status article > div { font-size: 0.75rem !important; color: #626784 !important; line-height: 1.5 !important; }
+    .live-status .data { color: #626784 !important; font-weight: 400 !important; }
 
     /* The pill, which is how the old page showed state. */
     .live-status article::after {
