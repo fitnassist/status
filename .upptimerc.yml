@@ -47,8 +47,8 @@ status-website:
   logoUrl: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
   faviconSvg: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
   favicon: https://raw.githubusercontent.com/fitnassist/status/master/assets/favicon.png
-  introTitle: "Fitnassist system status"
-  introMessage: Live status of everything Fitnassist depends on. Each service is checked every five minutes from GitHub, independently of the services themselves, so this page stays up when they do not.
+  introTitle: "System Status"
+  introMessage: Current operational status of Fitnassist services
   # `name` already renders as the title beside the logo, so a "Fitnassist"
   # nav item as well put the word on screen twice.
   navbar:
@@ -74,120 +74,143 @@ status-website:
   # understood instantly and without reading, and teal-for-good would be worse
   # for everybody to make the screenshot nicer. The active nav underline is
   # coral, which is what the web app's own nav uses for the current item.
+  # Copied from the page this replaces (apps/web/src/pages/status, removed in
+  # fitnassist/fitnassist#324) and from MainLayout's header, rather than
+  # approximated: same tokens, same type scale, same spacing.
+  #
+  # Light, because that page was. The header stays navy because the site's
+  # header is navy in both themes.
   css: |
-    /* Rebuilt to match the in-app status page it replaces: a narrow centred
-       column, a centred title, and one bordered card per service.
-
-       Upptime's own layout is a wide full-bleed list with a large display
-       heading and a sparkline bleeding through each row, which next to the
-       rest of the site looked like a different product. */
     :root {
-      --body-background-color: #14161f;
-      --body-text-color: #f2f2f2;
-      --card-background-color: #1c1e2c;
-      --card-border-color: #2a2d3c;
-      --nav-background-color: #1c1e2c;
-      --nav-border-bottom-color: #2a2d3c;
-      --nav-current-border-bottom-color: #be274a;
-      --tag-color: #14161f;
-      --submit-button-background-color: #be274a;
-      --submit-button-border-color: #a02040;
-      --submit-button-color: #ffffff;
-      --error-button-background-color: #be274a;
-      --error-button-border-color: #a02040;
-      --error-button-color: #ffffff;
-      /* The response-time sparkline sits BEHIND the row. At full strength it
-         fights the text; faint, it reads as texture. */
-      --graph-opacity: 0.18;
+      --body-background-color: #ffffff;   /* --background */
+      --body-text-color: #131520;         /* --foreground, 230 25% 10% */
+      --card-background-color: #ffffff;
+      --card-border-color: #dcdde5;       /* --border, 230 15% 88% */
+      --nav-background-color: #131520;    /* header: hsl(230 25% 10%) */
+      --nav-border-bottom-color: #131520;
+      --nav-current-border-bottom-color: transparent;
+      /* The rows carry a uniform border like the old page, not a coloured
+         left edge. State is the pill on the right. */
+      --up-border-left-color: #dcdde5;
+      --degraded-border-left-color: #f59e0b;
+      --down-border-left-color: #ef4444;
+      /* The response-time sparkline bled through every row. */
+      --graph-opacity: 0;
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #ffffff;
+      color: #131520;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* A wide wordmark in a box. Left alone it dwarfs the navbar. */
-    .logo { max-height: 1.5rem; width: auto; }
+    /* --- Header: MainLayout's, h-16 --------------------------------------
+       Upptime's nav is 75px tall with `overflow: auto`, and renders the logo
+       at 48px inside a 40px link — so the wordmark overflowed its own
+       container and the top of it was being clipped off. That is what looked
+       broken. The site uses h-7 (28px) in a 64px bar. */
+    nav { background: #131520; border-bottom: none; padding: 0; overflow: visible; }
+    nav > .container { max-width: none; padding: 0 1.5rem; height: 4rem; min-height: 0; }
+    nav > .container > div:first-child { display: flex; align-items: center; height: 4rem; }
+    nav .logo { padding: 0; height: 4rem; display: flex; align-items: center; }
+    nav .logo img { height: 1.75rem; width: auto; max-height: none; display: block; }
+    /* The logo IS the wordmark; the site title rendered it a second time. */
+    nav .logo > div { display: none; }
+    nav ul { height: 4rem; align-items: center; margin: 0; }
+    nav a {
+      color: rgba(255, 255, 255, 0.8);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    nav a:hover { color: #ffffff; }
+    nav li a[aria-current] { color: #ffffff; border-bottom: none; }
 
-    /* "Fitnassist" was on screen twice: the logo IS the wordmark, and the
-       site title renders as text immediately after it. Hide the text — the
-       link still works, and the accessible name comes from the anchor. */
-    .logo + span { display: none; }
-
-    .container { max-width: 44rem; }
-
-    /* The default is a display-sized heading. The page it replaces used 2rem
-       centred, with the explanation beneath it in muted grey. */
+    /* --- Page: max-w-2xl, py-16 ----------------------------------------- */
+    main { padding: 4rem 1rem; }
+    main .container { max-width: 42rem; }
     h1 {
       font-size: 1.875rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+      font-weight: 700;
       text-align: center;
-      margin-bottom: 0.5rem;
+      color: #131520;
+      margin: 0;
     }
     .lead {
-      text-align: center;
-      font-size: 0.9375rem;
-      line-height: 1.6;
-      color: #9da0af;
-      margin: 0 auto 2.5rem;
-      max-width: 34rem;
-    }
-
-    h2 { font-size: 1.125rem; letter-spacing: -0.01em; }
-
-    /* One bordered card per service, name left, status right. */
-    .live-status article {
-      border: 1px solid #2a2d3c;
-      border-left-width: 3px;
-      border-radius: 12px;
-      background-color: #1c1e2c;
-      padding: 1rem 1.25rem;
-      margin-bottom: 0.75rem;
-    }
-    .live-status article h4 {
       font-size: 1rem;
-      font-weight: 600;
-      margin: 0 0 0.25rem;
+      text-align: center;
+      color: #626784;
+      margin: 0.5rem 0 3rem;
+      max-width: none;
     }
-    .live-status article h4 a { color: #f2f2f2; text-decoration: none; }
-    .live-status article h4 a:hover { color: #5ed4c0; }
-    /* Favicons fetched per site. Ours are all one API, so they are nine
-       copies of the same image saying nothing. */
-    .live-status article h4 .icon { display: none; }
-    .live-status article div { font-size: 0.8125rem; color: #9da0af; }
-    .live-status .data { color: #f2f2f2; font-weight: 500; }
 
-    /* The pill on the right, which is how the page this replaces showed
-       state. Upptime says it with a coloured left border alone, which is
-       easy to miss and impossible to read out. */
-    .live-status article { position: relative; }
+    /* --- Overall banner: rounded-lg border p-6 mb-8 text-center ---------- */
+    main > article {
+      display: block;
+      text-align: center;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+      border-radius: 0.5rem;
+      background: rgba(34, 197, 94, 0.05);
+      color: #22c55e;
+      font-size: 1.125rem;
+      font-weight: 600;
+      padding: 1.5rem;
+      margin: 0 0 2rem;
+    }
+
+    h2 { display: none; }
+
+    /* --- Rows: rounded-lg border p-4, space-y-3 -------------------------- */
+    .live-status article {
+      position: relative;
+      border: 1px solid #dcdde5;
+      border-left-width: 1px;
+      border-radius: 0.5rem;
+      background: #ffffff;
+      background-image: none;
+      padding: 1rem;
+      margin: 0 0 0.75rem;
+    }
+    .live-status article h4 { font-size: 1rem; font-weight: 500; margin: 0; }
+    .live-status article h4 a { color: #131520; text-decoration: none; }
+    /* Every row points at the same API, so the per-site favicon was nine
+       copies of one icon saying nothing. */
+    .live-status article h4 .icon { display: none; }
+    .live-status article > div { font-size: 0.75rem; color: #626784; line-height: 1.5; }
+    .live-status .data { color: #626784; font-weight: 400; }
+
+    /* The pill, which is how the old page showed state. */
     .live-status article::after {
       position: absolute;
-      top: 1rem;
-      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 1rem;
       font-size: 0.75rem;
       font-weight: 500;
       padding: 0.25rem 0.75rem;
-      border-radius: 999px;
+      border-radius: 9999px;
     }
     .live-status article.up::after {
       content: 'Operational';
-      background: rgba(34, 197, 94, 0.12);
+      background: rgba(34, 197, 94, 0.1);
       color: #22c55e;
     }
     .live-status article.degraded::after {
       content: 'Degraded';
-      background: rgba(245, 158, 11, 0.12);
+      background: rgba(245, 158, 11, 0.1);
       color: #f59e0b;
     }
     .live-status article.down::after {
       content: 'Down';
-      background: rgba(239, 68, 68, 0.12);
+      background: rgba(239, 68, 68, 0.1);
       color: #ef4444;
     }
 
-    a { color: #5ed4c0; }
+    a { color: #228171; }   /* --primary-emphasis */
 
 # Notifications are deliberately left off here. GitHub's scheduled workflows
 # are not guaranteed to run on time and can be delayed under load, so this is
