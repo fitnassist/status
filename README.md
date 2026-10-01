@@ -18,10 +18,10 @@ infrastructure with the thing it watches.
 
 ## What is checked
 
-| Check | Endpoint | What a failure means |
-| --- | --- | --- |
-| Website | `www.fitnassist.co` | Vercel. The marketing site and web app are gone; the mobile app is unaffected. |
-| API | `api.fitnassist.co/health` | A liveness probe that touches nothing, so a failure means the Railway process itself is not running. |
+| Check    | Endpoint                            | What a failure means                                                                                     |
+| -------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Website  | `www.fitnassist.co`                 | Vercel. The marketing site and web app are gone; the mobile app is unaffected.                           |
+| API      | `api.fitnassist.co/health`          | A liveness probe that touches nothing, so a failure means the Railway process itself is not running.     |
 | Database | `api.fitnassist.co/health/detailed` | Runs `SELECT 1` against Postgres and returns 503 if it cannot. The API can be healthy while Neon is not. |
 
 Checks run every five minutes. Results are committed to `history/`, so the
