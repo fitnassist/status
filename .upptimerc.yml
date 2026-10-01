@@ -47,8 +47,8 @@ status-website:
   logoUrl: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
   faviconSvg: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
   favicon: https://raw.githubusercontent.com/fitnassist/status/master/assets/favicon.png
-  introTitle: "System Status"
-  introMessage: Current operational status of Fitnassist services
+  introTitle: ""
+  introMessage: ""
   # `name` already renders as the title beside the logo, so a "Fitnassist"
   # nav item as well put the word on screen twice.
   navbar:
@@ -146,26 +146,16 @@ status-website:
     /* --- Page: max-w-2xl, py-16 ----------------------------------------- */
     main { padding: 4rem 1rem !important; }
     main .container { max-width: 42rem !important; }
-    h1 {
-      font-size: 1.875rem !important;
-      font-weight: 700 !important;
-      text-align: center !important;
-      color: #131520 !important;
-      margin: 0 !important;
-    }
-    .lead {
-      font-size: 1rem !important;
-      text-align: center !important;
-      color: #626784 !important;
-      margin: 0.5rem 0 3rem !important;
-      max-width: none !important;
-    }
+    /* No title or intro: the header already says whose status page this is. */
+    h1, .lead { display: none !important; }
+    main > div:first-child:has(h1) { display: none !important; }
 
     /* --- Overall banner: rounded-lg border p-6 mb-8 text-center ---------- */
     main > article {
       display: block !important;
       text-align: center !important;
       border: 1px solid rgba(34, 197, 94, 0.2) !important;
+      border-left: 1px solid rgba(34, 197, 94, 0.2) !important;
       border-radius: 0.5rem !important;
       background: rgba(34, 197, 94, 0.05) !important;
       color: #22c55e !important;
@@ -176,6 +166,10 @@ status-website:
     }
 
     h2 { display: none !important; }
+
+    /* The range picker sat flush against the first row. */
+    .live-status { margin-top: 0 !important; }
+    main > div:has(> .f.r), main .f.r { margin-bottom: 1.25rem !important; }
 
     /* --- Rows: rounded-lg border p-4, space-y-3 -------------------------- */
     .live-status article {
