@@ -64,13 +64,15 @@ status-website:
   # fresher answer to fetch.
   productionCacheTime: 600000
 
+  # One link, and only one.
+  #
+  # "Status" pointed at `/`, which on this host resolves to
+  # fitnassist.github.io rather than fitnassist.github.io/status — a 404 from
+  # the status page's own navbar. It was also pointing at the page you are
+  # already on. Support needed the site anyway, so the way back covers it.
   navbar:
-    - title: Status
-      href: /
     - title: Back to Fitnassist
       href: https://www.fitnassist.co
-    - title: Support
-      href: https://www.fitnassist.co/support
 
   theme: dark
   links:
@@ -132,7 +134,16 @@ status-website:
        beat anything reasonable written here. The generated hash also changes
        between releases, so matching it would break on the next update. */
     nav { background: #131520 !important; border-bottom: none !important; padding: 0 !important; overflow: visible !important; }
-    nav > .container { max-width: none !important; padding: 0 1.5rem !important; height: 4rem !important; min-height: 0 !important; }
+    nav > .container {
+      max-width: 100% !important;
+      width: 100% !important;
+      padding: 0 1.5rem !important;
+      height: 4rem !important;
+      min-height: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+    }
     nav > .container > div:first-child { display: flex !important; align-items: center !important; height: 4rem !important; }
     nav .logo { padding: 0 !important; height: 4rem !important; display: flex !important; align-items: center !important; }
     nav .logo img {
@@ -154,12 +165,12 @@ status-website:
       font-weight: 600 !important;
       letter-spacing: 0.05em !important;
       border-bottom: none !important;
-      /* Upptime pads these `24px 32px 0`, with the top padding there to push
+      /* Upptime pads these `24px 32px 0`, the top padding existing to push
          the text above the active underline. The underline is gone, so that
-         padding only shifted every label 12px below the centre line while
-         the logo beside it was centred. Full-height flex item instead, with
-         the horizontal padding kept for spacing. */
-      padding: 0 1.5rem !important;
+         padding only shifted the label 12px below the centre line while the
+         logo beside it was centred. Full-height flex item instead, and no
+         horizontal padding now the container spaces logo and link apart. */
+      padding: 0 !important;
       height: 4rem !important;
       display: flex !important;
       align-items: center !important;
@@ -255,8 +266,7 @@ status-website:
     @media (max-width: 640px) {
       nav > .container { padding: 0 1rem !important; }
       nav .logo img { height: 1.375rem !important; }
-      nav li:nth-child(1), nav li:nth-child(3) { display: none !important; }
-      nav li a { padding: 0 0 0 1rem !important; font-size: 0.6875rem !important; }
+      nav li a { padding: 0 !important; font-size: 0.6875rem !important; }
       main { padding: 2.5rem 1rem !important; }
     }
 
