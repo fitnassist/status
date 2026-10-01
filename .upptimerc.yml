@@ -1,31 +1,52 @@
-# Change these first
-owner: upptime # Your GitHub organization or username, where this repository lives
-repo: upptime # The name of this repository
+owner: fitnassist
+repo: status
 
+# What gets probed, and why each one is here.
+#
+# Three checks rather than one, because "Fitnassist is down" has three very
+# different causes and the person reading this page wants to know which:
+#
+#   Website   — Vercel. If this fails the marketing site and the web app are
+#               gone, but a signed-in mobile user is fine.
+#   API       — Railway. /health is a plain liveness probe: it answers 200
+#               and touches nothing, so a failure means the process itself
+#               is not up.
+#   Database  — /health/detailed runs `SELECT 1` against Postgres and returns
+#               503 if it cannot. The API can be perfectly healthy while Neon
+#               is not, and that is the case where the apps look broken for
+#               reasons the API check alone would never show.
+#
+# Deliberately NOT monitored from inside our own infrastructure. The page this
+# generates is served by GitHub Pages and the checks run on GitHub Actions, so
+# nothing here depends on Vercel or Railway being up — which is the whole
+# reason it is not the /status page that used to live in the web app.
 sites:
-  - name: Google
-    url: https://www.google.com
-  - name: Wikipedia
-    url: https://en.wikipedia.org
-  - name: Hacker News
-    url: https://news.ycombinator.com
-  - name: Secret Site
-    url: $SECRET_SITE
+  - name: Website
+    url: https://www.fitnassist.co
+  - name: API
+    url: https://api.fitnassist.co/health
+  - name: Database
+    url: https://api.fitnassist.co/health/detailed
 
 status-website:
-  # Add your custom domain name, or remove the `cname` line if you don't have a domain
-  # Uncomment the `baseUrl` line if you don't have a custom domain and add your repo name there
-  cname: demo.upptime.js.org
-  # baseUrl: /your-repo-name
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
-  name: Upptime
-  introTitle: "**Upptime** is the open-source uptime monitor and status page, powered entirely by GitHub."
-  introMessage: This is a sample status page which uses **real-time** data from our [GitHub repository](https://github.com/upptime/upptime). No server required — just GitHub Actions, Issues, and Pages. [**Get your own for free**](https://github.com/upptime/upptime)
+  # Switch to `cname: status.fitnassist.co` once the DNS record exists.
+  # Setting it before that breaks both URLs: GitHub Pages stops serving the
+  # github.io address as soon as a custom domain is configured, and the
+  # custom one does not resolve yet.
+  baseUrl: /status
+  logoUrl: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
+  name: Fitnassist
+  introTitle: "Fitnassist system status"
+  introMessage: Live status of the Fitnassist website, API and database. Checks run every five minutes from GitHub, independently of the services they monitor, so this page stays up when they do not.
   navbar:
     - title: Status
       href: /
-    - title: GitHub
-      href: https://github.com/$OWNER/$REPO
+    - title: Fitnassist
+      href: https://www.fitnassist.co
+    - title: Support
+      href: https://www.fitnassist.co/support
 
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+# Notifications are deliberately left off here. GitHub's scheduled workflows
+# are not guaranteed to run on time and can be delayed under load, so this is
+# a good public record and a poor pager. Alerting is a separate external
+# monitor pointed at the same endpoints.
