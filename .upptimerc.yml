@@ -75,6 +75,12 @@ status-website:
   # for everybody to make the screenshot nicer. The active nav underline is
   # coral, which is what the web app's own nav uses for the current item.
   css: |
+    /* Rebuilt to match the in-app status page it replaces: a narrow centred
+       column, a centred title, and one bordered card per service.
+
+       Upptime's own layout is a wide full-bleed list with a large display
+       heading and a sparkline bleeding through each row, which next to the
+       rest of the site looked like a different product. */
     :root {
       --body-background-color: #14161f;
       --body-text-color: #f2f2f2;
@@ -90,15 +96,63 @@ status-website:
       --error-button-background-color: #be274a;
       --error-button-border-color: #a02040;
       --error-button-color: #ffffff;
+      /* The response-time sparkline sits BEHIND the row. At full strength it
+         fights the text; faint, it reads as texture. */
+      --graph-opacity: 0.18;
     }
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-    /* The logo is a wide wordmark in a box; left to itself it dwarfs the
-       navbar and crowds the title next to it. */
-    .logo { max-height: 1.75rem; width: auto; }
-    h1 { letter-spacing: -0.02em; }
-    .lead { max-width: 46rem; color: #9da0af; }
+
+    /* A wide wordmark in a box. Left alone it dwarfs the navbar. */
+    .logo { max-height: 1.5rem; width: auto; }
+
+    .container { max-width: 44rem; }
+
+    /* The default is a display-sized heading. The page it replaces used 2rem
+       centred, with the explanation beneath it in muted grey. */
+    h1 {
+      font-size: 1.875rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .lead {
+      text-align: center;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: #9da0af;
+      margin: 0 auto 2.5rem;
+      max-width: 34rem;
+    }
+
+    h2 { font-size: 1.125rem; letter-spacing: -0.01em; }
+
+    /* One bordered card per service, name left, status right. */
+    .live-status article {
+      border: 1px solid #2a2d3c;
+      border-left-width: 3px;
+      border-radius: 12px;
+      background-color: #1c1e2c;
+      padding: 1rem 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .live-status article h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem;
+    }
+    .live-status article h4 a { color: #f2f2f2; text-decoration: none; }
+    .live-status article h4 a:hover { color: #5ed4c0; }
+    /* Favicons fetched per site. Ours are all one API, so they are nine
+       copies of the same image saying nothing. */
+    .live-status article h4 .icon { display: none; }
+    .live-status article div { font-size: 0.8125rem; color: #9da0af; }
+    .live-status .data { color: #f2f2f2; font-weight: 500; }
+
     a { color: #5ed4c0; }
 
 # Notifications are deliberately left off here. GitHub's scheduled workflows
