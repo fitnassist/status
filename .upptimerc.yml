@@ -51,6 +51,19 @@ status-website:
   introMessage: ""
   # `name` already renders as the title beside the logo, so a "Fitnassist"
   # nav item as well put the word on screen twice.
+  # How long the page reuses a GitHub response from localStorage.
+  #
+  # The default is two minutes, and the incident listings are the only thing
+  # on the page that calls the GitHub API — the status data itself comes from
+  # raw.githubusercontent.com, which is not rate limited. Unauthenticated
+  # GitHub allows 60 calls an hour PER VISITOR IP, so at four calls a load a
+  # reader refreshing during an outage can lock themselves out of the status
+  # page, which is the worst possible moment for it.
+  #
+  # Ten minutes costs nothing: the checks only run every five, so there is no
+  # fresher answer to fetch.
+  productionCacheTime: 600000
+
   navbar:
     - title: Status
       href: /
@@ -162,8 +175,12 @@ status-website:
     main > article {
       display: block !important;
       text-align: center !important;
+      /* All four sides green. The left edge was coming out grey because
+         --up-border-left-color is set to the row border colour for the
+         service cards below, and the banner picks up the same variable. */
       border: 1px solid rgba(34, 197, 94, 0.2) !important;
-      border-left: 1px solid rgba(34, 197, 94, 0.2) !important;
+      border-left-color: rgba(34, 197, 94, 0.2) !important;
+      border-left-width: 1px !important;
       border-radius: 0.5rem !important;
       background: rgba(34, 197, 94, 0.05) !important;
       color: #22c55e !important;
