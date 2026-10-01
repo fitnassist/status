@@ -3,30 +3,39 @@ repo: status
 
 # What gets probed, and why each one is here.
 #
-# Three checks rather than one, because "Fitnassist is down" has three very
-# different causes and the person reading this page wants to know which:
+# Named for the person reading the page, not for the vendor: someone whose
+# payment just failed wants to see "Billing", and has no idea we use Stripe.
+# The same labels live in apps/api/src/services/health.service.ts, which is
+# what actually runs each check.
 #
-#   Website   — Vercel. If this fails the marketing site and the web app are
-#               gone, but a signed-in mobile user is fine.
-#   API       — Railway. /health is a plain liveness probe: it answers 200
-#               and touches nothing, so a failure means the process itself
-#               is not up.
-#   Database  — /health/detailed runs `SELECT 1` against Postgres and returns
-#               503 if it cannot. The API can be perfectly healthy while Neon
-#               is not, and that is the case where the apps look broken for
-#               reasons the API check alone would never show.
+# Every /health/* endpoint makes a real authenticated call to the provider
+# from OUR side, rather than reading the provider's own status page. A revoked
+# key, the wrong account, or a network path broken only for us are all green
+# on status.stripe.com and all take the product down just as completely.
 #
-# Deliberately NOT monitored from inside our own infrastructure. The page this
-# generates is served by GitHub Pages and the checks run on GitHub Actions, so
-# nothing here depends on Vercel or Railway being up — which is the whole
-# reason it is not the /status page that used to live in the web app.
+# Deliberately not hosted on anything it watches. The checks run on GitHub
+# Actions and the page is served by GitHub Pages, so nothing here depends on
+# Vercel or Railway — which is the whole reason this is not the /status page
+# that used to live in the web app.
 sites:
   - name: Website
     url: https://www.fitnassist.co
   - name: API
     url: https://api.fitnassist.co/health
   - name: Database
-    url: https://api.fitnassist.co/health/detailed
+    url: https://api.fitnassist.co/health/database
+  - name: Authentication
+    url: https://api.fitnassist.co/health/auth
+  - name: Billing
+    url: https://api.fitnassist.co/health/stripe
+  - name: Email delivery
+    url: https://api.fitnassist.co/health/email
+  - name: Photos and video
+    url: https://api.fitnassist.co/health/media
+  - name: SMS and calls
+    url: https://api.fitnassist.co/health/sms
+  - name: Food scanning
+    url: https://api.fitnassist.co/health/ai
 
 status-website:
   # Switch to `cname: status.fitnassist.co` once the DNS record exists.
@@ -34,10 +43,12 @@ status-website:
   # github.io address as soon as a custom domain is configured, and the
   # custom one does not resolve yet.
   baseUrl: /status
-  logoUrl: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
   name: Fitnassist
+  logoUrl: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
+  faviconSvg: https://raw.githubusercontent.com/fitnassist/status/master/assets/logo.svg
+  favicon: https://raw.githubusercontent.com/fitnassist/status/master/assets/favicon.png
   introTitle: "Fitnassist system status"
-  introMessage: Live status of the Fitnassist website, API and database. Checks run every five minutes from GitHub, independently of the services they monitor, so this page stays up when they do not.
+  introMessage: Live status of everything Fitnassist depends on. Each service is checked every five minutes from GitHub, independently of the services themselves, so this page stays up when they do not.
   navbar:
     - title: Status
       href: /
@@ -45,6 +56,44 @@ status-website:
       href: https://www.fitnassist.co
     - title: Support
       href: https://www.fitnassist.co/support
+
+  theme: dark
+  links:
+    - rel: preconnect
+      href: https://fonts.gstatic.com
+    - rel: stylesheet
+      href: https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap
+
+  # Fitnassist's own palette over Upptime's dark theme, matching
+  # apps/web/src/styles/globals.css.
+  #
+  # The up/degraded/down colours are left as green/amber/red on purpose. They
+  # are not branding, they are the one thing on the page that has to be
+  # understood instantly and without reading, and teal-for-good would be worse
+  # for everybody to make the screenshot nicer. The active nav underline is
+  # coral, which is what the web app's own nav uses for the current item.
+  css: |
+    :root {
+      --body-background-color: #14161f;
+      --body-text-color: #f2f2f2;
+      --card-background-color: #1c1e2c;
+      --card-border-color: #2a2d3c;
+      --nav-background-color: #1c1e2c;
+      --nav-border-bottom-color: #2a2d3c;
+      --nav-current-border-bottom-color: #be274a;
+      --tag-color: #14161f;
+      --submit-button-background-color: #be274a;
+      --submit-button-border-color: #a02040;
+      --submit-button-color: #ffffff;
+      --error-button-background-color: #be274a;
+      --error-button-border-color: #a02040;
+      --error-button-color: #ffffff;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .container .logo { max-height: 2rem; width: auto; }
+    a { color: #5ed4c0; }
 
 # Notifications are deliberately left off here. GitHub's scheduled workflows
 # are not guaranteed to run on time and can be delayed under load, so this is
