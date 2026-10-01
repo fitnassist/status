@@ -104,7 +104,10 @@ status-website:
       --nav-current-border-bottom-color: transparent;
       /* The rows carry a uniform border like the old page, not a coloured
          left edge. State is the pill on the right. */
-      --up-border-left-color: #dcdde5;
+      /* Green, because the BANNER reads this. Overriding it on the banner
+         alone kept losing to Upptime's own rule, so the variable serves the
+         banner and the service rows below state their grey outright. */
+      --up-border-left-color: rgba(34, 197, 94, 0.2);
       --degraded-border-left-color: #f59e0b;
       --down-border-left-color: #ef4444;
       /* The response-time sparkline bled through every row. */
@@ -200,7 +203,7 @@ status-website:
     .live-status article {
       position: relative !important;
       border: 1px solid #dcdde5 !important;
-      border-left-width: 1px !important;
+      border-left: 1px solid #dcdde5 !important;
       border-radius: 0.5rem !important;
       background: #ffffff !important;
       background-image: none !important;
@@ -243,6 +246,19 @@ status-website:
     }
 
     a { color: #228171; }   /* --primary-emphasis */
+
+    /* --- Phones -------------------------------------------------------
+       The wordmark is wide and three uppercase labels beside it do not fit;
+       they wrapped and broke the 64px bar. Only the way back to the site
+       survives — "Status" is the page you are already on, and Support is one
+       tap further once you are there. */
+    @media (max-width: 640px) {
+      nav > .container { padding: 0 1rem !important; }
+      nav .logo img { height: 1.375rem !important; }
+      nav li:nth-child(1), nav li:nth-child(3) { display: none !important; }
+      nav li a { padding: 0 0 0 1rem !important; font-size: 0.6875rem !important; }
+      main { padding: 2.5rem 1rem !important; }
+    }
 
 # Notifications are deliberately left off here. GitHub's scheduled workflows
 # are not guaranteed to run on time and can be delayed under load, so this is
