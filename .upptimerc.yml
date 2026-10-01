@@ -138,7 +138,15 @@ status-website:
       font-weight: 600 !important;
       letter-spacing: 0.05em !important;
       border-bottom: none !important;
-      padding-bottom: 0 !important;
+      /* Upptime pads these `24px 32px 0`, with the top padding there to push
+         the text above the active underline. The underline is gone, so that
+         padding only shifted every label 12px below the centre line while
+         the logo beside it was centred. Full-height flex item instead, with
+         the horizontal padding kept for spacing. */
+      padding: 0 1.5rem !important;
+      height: 4rem !important;
+      display: flex !important;
+      align-items: center !important;
     }
     nav a:hover { color: #ffffff !important; }
     nav li a[aria-current] { color: #ffffff !important; border-bottom: none !important; }
