@@ -36,6 +36,11 @@ sites:
     url: https://api.fitnassist.co/health/sms
   - name: Food scanning
     url: https://api.fitnassist.co/health/ai
+  # Open Food Facts, which every scanned barcode goes through. Free and
+  # volunteer-run, with no key of ours to break, so its outages arrive with no
+  # error on our side to explain them.
+  - name: Barcode lookup
+    url: https://api.fitnassist.co/health/barcode
 
 status-website:
   # Switch to `cname: status.fitnassist.co` once the DNS record exists.
