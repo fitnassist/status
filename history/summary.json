@@ -160,5 +160,23 @@
     "timeMonth": 349,
     "timeYear": 349,
     "dailyMinutesDown": {}
+  },
+  {
+    "name": "Barcode lookup",
+    "url": "https://api.fitnassist.co/health/barcode",
+    "icon": "https://icons.duckduckgo.com/ip3/api.fitnassist.co.ico",
+    "slug": "barcode-lookup",
+    "status": "up",
+    "uptime": "100.00%",
+    "uptimeDay": "100.00%",
+    "uptimeWeek": "100.00%",
+    "uptimeMonth": "100.00%",
+    "uptimeYear": "100.00%",
+    "time": 339,
+    "timeDay": 339,
+    "timeWeek": 339,
+    "timeMonth": 339,
+    "timeYear": 339,
+    "dailyMinutesDown": {}
   }
 ]
