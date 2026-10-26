@@ -148,18 +148,20 @@
     "url": "https://api.fitnassist.co/health/ai",
     "icon": "https://icons.duckduckgo.com/ip3/api.fitnassist.co.ico",
     "slug": "food-scanning",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.99%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 480,
-    "timeDay": 340,
-    "timeWeek": 489,
-    "timeMonth": 480,
-    "timeYear": 480,
-    "dailyMinutesDown": {}
+    "time": 469,
+    "timeDay": 267,
+    "timeWeek": 452,
+    "timeMonth": 469,
+    "timeYear": 469,
+    "dailyMinutesDown": {
+      "2026-10-26": 0
+    }
   },
   {
     "name": "Barcode lookup",
